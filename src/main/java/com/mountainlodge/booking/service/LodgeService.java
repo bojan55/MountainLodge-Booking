@@ -7,7 +7,6 @@ import com.mountainlodge.booking.entity.User;
 import com.mountainlodge.booking.exception.ResourceNotFoundException;
 import com.mountainlodge.booking.repository.LodgeRepository;
 import com.mountainlodge.booking.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

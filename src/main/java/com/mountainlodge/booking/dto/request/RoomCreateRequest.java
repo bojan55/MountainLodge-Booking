@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RoomCreateRequest {
 
-    private Long roomNumber;
-    private Long capacity;
+    private String roomNumber;
+    private int capacity;
     private Long lodgeId;
 }
