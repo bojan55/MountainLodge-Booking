@@ -1,5 +1,6 @@
 package com.mountainlodge.booking.dto.response;
 
+import com.mountainlodge.booking.enums.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class ReservationResponse {
     private String lodgeName;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String status;
+    private ReservationStatus reservationStatus;
     private LocalDateTime createdAt;
 
 }
