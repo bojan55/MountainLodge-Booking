@@ -6,6 +6,7 @@ import com.mountainlodge.booking.entity.Reservation;
 import com.mountainlodge.booking.entity.Room;
 import com.mountainlodge.booking.entity.User;
 import com.mountainlodge.booking.enums.ReservationStatus;
+import com.mountainlodge.booking.exception.ReservationConflictException;
 import com.mountainlodge.booking.exception.ResourceNotFoundException;
 import com.mountainlodge.booking.repository.ReservationRepository;
 import com.mountainlodge.booking.repository.RoomRepository;
@@ -32,6 +33,17 @@ public class ReservationService {
         Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Room not found with id " + request.getRoomId()));
+
+        List<Reservation> overlapping = reservationRepository.findOverlappingReservations(
+                request.getRoomId(),
+                request.getStartDate(),
+                request.getEndDate()
+        );
+        if (!overlapping.isEmpty()){
+            throw new ReservationConflictException(
+                    "Room is already reserved for the selected dates "
+            );
+        }
 
         Reservation reservation = new Reservation();
         reservation.setUser(user);
