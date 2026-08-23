@@ -1,5 +1,6 @@
 package com.mountainlodge.booking.exception;
 
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ReservationConflictException.class)
     public ResponseEntity<ProblemDetail> handleReservationConflict(ReservationConflictException ex){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
+    }
+
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    public ResponseEntity<ProblemDetail> handleOptimisticLocking(OptimisticLockingFailureException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "This reservation was modified by another request. Please try again.");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
     }
 }
