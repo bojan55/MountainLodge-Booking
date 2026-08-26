@@ -88,6 +88,16 @@ public class ReservationService {
         return mapToResponseDTO(updated);
     }
 
+    public ReservationResponse confirmReservation(Long id){
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Reservation not found with id " + id
+                ));
+        reservation.setReservationStatus(ReservationStatus.CONFIRMED);
+        Reservation updated = reservationRepository.save(reservation);
+        return mapToResponseDTO(updated);
+    }
+
 
     private ReservationResponse mapToResponseDTO(Reservation reservation){
         return new ReservationResponse(
