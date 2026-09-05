@@ -83,6 +83,7 @@ public class ReservationService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Reservation not found with id " + id
                 ));
+        validateStatusTransition(reservation.getReservationStatus(), ReservationStatus.CANCELLED);
         reservation.setReservationStatus(ReservationStatus.CANCELLED);
         Reservation updated = reservationRepository.save(reservation);
         return mapToResponseDTO(updated);
@@ -93,9 +94,19 @@ public class ReservationService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Reservation not found with id " + id
                 ));
+        validateStatusTransition(reservation.getReservationStatus(), ReservationStatus.CONFIRMED);
         reservation.setReservationStatus(ReservationStatus.CONFIRMED);
         Reservation updated = reservationRepository.save(reservation);
         return mapToResponseDTO(updated);
+    }
+
+    private void validateStatusTransition(ReservationStatus currentStatus, ReservationStatus newStatus ){
+        if (currentStatus == ReservationStatus.CANCELLED){
+            throw new ReservationConflictException("Cannot change status of a cancelled reservation");
+        }
+        if (currentStatus == newStatus){
+            throw new ReservationConflictException("Reservation is already " + newStatus);
+        }
     }
 
 
