@@ -3,6 +3,7 @@ package com.mountainlodge.booking.controller;
 import com.mountainlodge.booking.dto.request.LodgeCreateRequest;
 import com.mountainlodge.booking.dto.response.LodgeResponse;
 import com.mountainlodge.booking.service.LodgeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class LodgeController {
     private final LodgeService lodgeService;
 
     @PostMapping
-    public ResponseEntity <LodgeResponse> createLodge(@RequestBody LodgeCreateRequest request){
+    public ResponseEntity <LodgeResponse> createLodge(@Valid @RequestBody LodgeCreateRequest request){
         LodgeResponse created = lodgeService.createLodge(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
